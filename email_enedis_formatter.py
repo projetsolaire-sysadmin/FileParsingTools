@@ -7,6 +7,9 @@ def open():
     df = df[df['Value'].notna()]
     print(df)
     df = df.dropna()
+
+
+
 def run():
     open()
 

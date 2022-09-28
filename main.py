@@ -37,7 +37,7 @@ def rebase_to_2020(df):
 
 
 def run():
-    parse_consumption()
+    #parse_consumption()
     parse_production()
 
 if __name__ == '__main__':
