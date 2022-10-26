@@ -6,3 +6,4 @@ notes.txt
 /app_parsing/database.db
 /app_parsing/init_db.py
 /app_parsing/schema.sql
+*.csv

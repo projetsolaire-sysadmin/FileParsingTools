@@ -1,11 +1,11 @@
 import sqlite3
-from flask import Flask, render_template, request, url_for, flash, redirect
+from flask import Flask, render_template, request, send_file, url_for, flash, redirect
 from werkzeug.exceptions import abort
 from werkzeug.utils import secure_filename
 from werkzeug.datastructures import  FileStorage
 import os
 
-UPLOAD_FOLDER = '/upload_files'
+UPLOAD_FOLDER = './upload_files/'
 ALLOWED_EXTENSIONS = {'csv'}
 
 def get_db_connection():
@@ -25,7 +25,6 @@ def get_post(post_id):
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'lgjdslgfgjldfgjkfjhlsfdgvj1kltjqm'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
 
 def allowed_file(filename):
     print(filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS)
@@ -66,7 +65,15 @@ def post():
         # print(1,request.files['file'])
         f = request.files['file']
         if secure_filename(f.filename)[-4:]==".csv":
-            f.save(secure_filename(f.filename))  #os.path.join('UPLOAD_FOLDER', filename), 
-            return 'file uploaded successfully' #redirect(request.url)
+            f.save(os.path.join(UPLOAD_FOLDER, f.filename))
+            return render_template('download.html')
+            # return 'file uploaded successfully' #redirect(request.url)
         else:
             return "not csv file"
+
+
+@app.route('/download/')
+def Download_File():
+    print('download')
+    PATH='exemple.csv'
+    return send_file(PATH,as_attachment=True)
