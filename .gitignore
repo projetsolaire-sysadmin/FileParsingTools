@@ -1,4 +1,3 @@
-notes.txt
 /env
 /old templates
 /app_parsing/__pycache__
@@ -7,3 +6,4 @@ notes.txt
 /app_parsing/init_db.py
 /app_parsing/schema.sql
 *.csv
+*.txt
