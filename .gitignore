@@ -7,5 +7,6 @@
 /app_parsing/database.db
 /app_parsing/init_db.py
 /app_parsing/schema.sql
+/app_parsing/z_test*.py
 *.csv
 *.txt
