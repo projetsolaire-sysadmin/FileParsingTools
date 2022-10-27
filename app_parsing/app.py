@@ -4,9 +4,11 @@ from werkzeug.exceptions import abort
 from werkzeug.utils import secure_filename
 from werkzeug.datastructures import  FileStorage
 import os
+import main
 
 UPLOAD_FOLDER = './upload_files/'
 ALLOWED_EXTENSIONS = {'csv'}
+file_formatted =""
 
 def get_db_connection():
     conn = sqlite3.connect('database.db')
@@ -25,6 +27,7 @@ def get_post(post_id):
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'lgjdslgfgjldfgjkfjhlsfdgvj1kltjqm'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['output_file'] =""
 
 def allowed_file(filename):
     print(filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS)
@@ -65,7 +68,12 @@ def post():
         # print(1,request.files['file'])
         f = request.files['file']
         if secure_filename(f.filename)[-4:]==".csv":
+            print(f)
             f.save(os.path.join(UPLOAD_FOLDER, f.filename))
+            
+            # print(os.path.join(UPLOAD_FOLDER, f.filename))
+            app.config['output_file'] = main.main(os.path.join(UPLOAD_FOLDER, f.filename))
+            
             return render_template('download.html')
             # return 'file uploaded successfully' #redirect(request.url)
         else:
@@ -75,5 +83,4 @@ def post():
 @app.route('/download/')
 def Download_File():
     print('download')
-    PATH='exemple.csv'
-    return send_file(PATH,as_attachment=True)
+    return send_file(app.config['output_file'],as_attachment=True)

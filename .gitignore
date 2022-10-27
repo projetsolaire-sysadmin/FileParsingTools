@@ -2,6 +2,8 @@
 /old templates
 /app_parsing/__pycache__
 /app_parsing/upload_files
+/app_parsing/env
+/app_parsing/__init__.bat
 /app_parsing/database.db
 /app_parsing/init_db.py
 /app_parsing/schema.sql

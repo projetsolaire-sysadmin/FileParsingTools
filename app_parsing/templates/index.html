@@ -29,7 +29,6 @@
 	</nav>
 	<div class="container">
 		<h2>Outil de formatage des fichiers ENEDIS</h2>
-        <p>content</p>
         <form action="{{ url_for('post') }}" method="POST" enctype="multipart/form-data" action="/foo/">
         <div>
             <input type="checkbox" name="completerannee" checked>
@@ -39,6 +38,7 @@
             <ul></ul>
             <button type="submit" class="btn btn-primary">Traiter le fichier</button>
         </div>
+        <p>Le traitement peut prendre 1 à 5 minutes</p>
         </form> 
 	</div>
 
