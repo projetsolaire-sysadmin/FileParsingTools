@@ -2,6 +2,7 @@
 /old templates
 /app/__pycache__
 /app/upload_files/*
+!/app/upload_files/.keep
 /app/env
 /app/__init__.bat
 /app/database.db
