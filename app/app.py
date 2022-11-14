@@ -70,7 +70,7 @@ def post():
         f = request.files['file']
         if secure_filename(f.filename)[-4:]==".csv":
             print(f)
-            f.save(os.path.join(app.config['UPLOAD_FOLDER'], f.filename))
+            f.save(os.path.join(UPLOAD_FOLDER, f.filename))
             print("here")
 
             # print(os.path.join(UPLOAD_FOLDER, f.filename))
