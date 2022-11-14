@@ -5,7 +5,7 @@ from werkzeug.utils import secure_filename
 import os
 from app.main import main
 
-UPLOAD_FOLDER = '/upload_files/'
+UPLOAD_FOLDER = 'upload_files'
 ALLOWED_EXTENSIONS = {'csv'}
 file_formatted =""
 
@@ -25,9 +25,9 @@ def get_post(post_id):
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'lgjdslgfgjldfgjkfjhlsfdgvj1kltjqm'
-app.config['PARENT_DIR'] = "./app"
-print(app.config['PARENT_DIR'])
-app.config['UPLOAD_FOLDER'] = app.config['PARENT_DIR'] + UPLOAD_FOLDER
+app.config['UPLOAD_FOLDER'] =  os.path.join(app.root_path, UPLOAD_FOLDER)
+print(app.config['UPLOAD_FOLDER'])
+
 app.config['output_file'] =""
 
 def allowed_file(filename):
