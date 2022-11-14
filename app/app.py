@@ -74,7 +74,8 @@ def post():
 
             # print(os.path.join(UPLOAD_FOLDER, f.filename))
             app.config['output_file'] = os.path.join(os.path.join(app.root_path, app.config['UPLOAD_FOLDER']), f.filename)
-            
+            print(app.config['output_file'])
+
             return render_template('download.html')
             # return 'file uploaded successfully' #redirect(request.url)
         else:
@@ -84,4 +85,5 @@ def post():
 @app.route('/download/')
 def Download_File():
     print('download')
-    return send_file(app.config['output_file'],as_attachment=True)
+    print(app.config['output_file'])
+    return send_file(app.config['output_file'], as_attachment=True)
