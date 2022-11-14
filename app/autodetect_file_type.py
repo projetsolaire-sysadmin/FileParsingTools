@@ -3,12 +3,12 @@ from app import class_EnedisSGEFormatParser
 from app import class_ConsumptionFile
 
 HEADERS_PRODUCTION_LIST = {'"",Month,Day,Hour,Energy Production [kWh]'}
-HEADERS_CONSUMPTION_LIST = {'ï»¿date;value',
-                            'ï»¿Identifiant PRM;Type de donnees;Date de debut;Date de fin;Grandeur physique;Grandeur metier;Etape metier;Unite;Pas en minutes',
+HEADERS_CONSUMPTION_LIST = ['ï»¿date;value',
                             'Date de la mesure;Heure de la mesure;Valeur;Statut de la mesure;PRM;Type de données;Date de début;Date de fin;Grandeur métier;Grandeur physique;Statut demandé;Unité;Pas en minutes',
                             'Date de la mesure;Heure de la mesure;Valeur;Statut de la mesure;PRM;Type de donnï¿½es;Date de dï¿½but;Date de fin;Grandeur mï¿½tier;Grandeur physique;Statut demandï¿½;Unitï¿½;Pas en minutes',
                             'ï»¿Identifiant PRM;Type de donnees;Date de debut;Date de fin;Grandeur physique;Grandeur metier;Etape metier;Unite',
-                            'Identifiant PRM;Type de donnees;Date de debut;Date de fin;Grandeur physique;Grandeur metier;Etape metier;Unite;Pas en minutes'}
+                            'Identifiant PRM;Type de donnees;Date de debut;Date de fin;Grandeur physique;Grandeur metier;Etape metier;Unite;Pas en minutes',
+                            'ï»¿Identifiant PRM;Type de donnees;Date de debut;Date de fin;Grandeur physique;Grandeur metier;Etape metier;Unite;Pas en minutes']
 HEADERS_CONSUMPTION_PARSED_LIST = {"measurementDate,measurementHour,value"}
 
 
@@ -61,8 +61,8 @@ def get_file_type(inputfile):
     for i in [1, 2, 3, 4]:
         if 'Arrêté quotidien' in lines[i] or "ArrÃªtÃ© quotidien" in lines[i]:
             return ("CONSUMPTION_FILE_DAILY_TYPE")
-    print(str(str(lines[0]).strip()) in HEADERS_CONSUMPTION_LIST)
-    print(str(lines[0]).strip())
+    print(any(x.strip() in str(lines[0]).strip() for x in HEADERS_CONSUMPTION_LIST))
+    print(lines[0].rstrip())
 
     if len(lines) < 10:
         return "NOT ENOUGH DATA"
@@ -71,7 +71,7 @@ def get_file_type(inputfile):
         print("production file detected")
         # parse production file
         return ("PRODUCTION_FILE_TYPE")
-    elif str(lines[0]).strip() in HEADERS_CONSUMPTION_LIST:
+    elif any(x.strip() in str(lines[0]).strip() for x in HEADERS_CONSUMPTION_LIST):
         print("consumption file detected")
         # parse consumption file
         return ("CONSUMPTION_FILE_TYPE")
