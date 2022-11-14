@@ -112,7 +112,7 @@ class class_ConsumptionFile:
 
 		self.tcd_month_average = temp_df_average.pivot_table(values=["value"], index=["month"], aggfunc=np.min)
 		# print(self.tcd_month_average)
-		self.tcd_month_average.to_csv('app/output/TCD.csv')
+		self.tcd_month_average.to_csv('output/TCD.csv')
 
 	'''
 	# ===========================================================================================
