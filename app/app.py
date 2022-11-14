@@ -25,7 +25,7 @@ def get_post(post_id):
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'lgjdslgfgjldfgjkfjhlsfdgvj1kltjqm'
-app.config['UPLOAD_FOLDER'] =  os.path.join(app.root_path, UPLOAD_FOLDER)
+app.config['UPLOAD_FOLDER'] =  os.path.join(app.instance_path, UPLOAD_FOLDER)
 print(app.config['UPLOAD_FOLDER'])
 
 app.config['output_file'] =""
@@ -70,7 +70,7 @@ def post():
         f = request.files['file']
         if secure_filename(f.filename)[-4:]==".csv":
             print(f)
-            f.save(os.path.join(UPLOAD_FOLDER, f.filename))
+            f.save(os.path.join(app.config['UPLOAD_FOLDER'], f.filename))
             print("here")
 
             # print(os.path.join(UPLOAD_FOLDER, f.filename))
