@@ -68,12 +68,10 @@ def post():
         # print(1,request.files['file'])
         f = request.files['file']
         if secure_filename(f.filename)[-4:]==".csv":
-            print(f)
             f.save(os.path.join(os.path.join(app.root_path, app.config['UPLOAD_FOLDER']), f.filename))
-            print("here")
 
             # print(os.path.join(UPLOAD_FOLDER, f.filename))
-            app.config['output_file'] = os.path.join(os.path.join(app.root_path, app.config['UPLOAD_FOLDER']), f.filename)
+            app.config['output_file'] = main(os.path.join(os.path.join(app.root_path, app.config['UPLOAD_FOLDER']), f.filename))
             print(app.config['output_file'])
 
             return render_template('download.html')
