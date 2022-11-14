@@ -27,6 +27,7 @@ app.config['SECRET_KEY'] = 'lgjdslgfgjldfgjkfjhlsfdgvj1kltjqm'
 app.config['UPLOAD_FOLDER'] =  os.path.join(app.root_path, UPLOAD_FOLDER)
 print(app.config['UPLOAD_FOLDER'])
 print(app.root_path)
+print(os.listdir())
 
 app.config['output_file'] =""
 
@@ -70,6 +71,8 @@ def post():
         f = request.files['file']
         if secure_filename(f.filename)[-4:]==".csv":
             print(os.path.join(app.config['UPLOAD_FOLDER'], f.filename))
+            print(os.listdir())
+
             f.save(os.path.join(app.config['UPLOAD_FOLDER'], f.filename))
             print("here")
 
