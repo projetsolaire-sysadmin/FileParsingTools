@@ -63,7 +63,6 @@ def get_file_type(inputfile):
             return ("CONSUMPTION_FILE_DAILY_TYPE")
     print(str(str(lines[0]).strip()) in HEADERS_CONSUMPTION_LIST)
     print(str(lines[0]).strip())
-    print(type(HEADERS_CONSUMPTION_LIST[0]))
 
     if len(lines) < 10:
         return "NOT ENOUGH DATA"
