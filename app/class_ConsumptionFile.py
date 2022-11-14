@@ -37,8 +37,9 @@ class class_ConsumptionFile:
 		self.init_coef_mensuels()
 		self.missing_data_detection()
 		# self.save_csv("output\TEST_etape4 ajout données manquantes.csv")
-		self.save_csv("output_formated\\"+self.filename+"_formated.csv",True)
-		self.file_formatted = "output_formated\\"+self.filename+"_formated.csv"
+
+		self.file_formatted = "app\\output_formated\\"+self.filename+"_formated.csv"
+		self.save_csv(self.file_formatted,True)
 
 	def display(self):
 		print("path_file :",self.file)
@@ -46,7 +47,7 @@ class class_ConsumptionFile:
 		# print("data :\n", self.df)
 		# print(self.df.head(8))
 
-	def save_csv(self, name='output/TEST.csv',final=TEST_SAUVEGARDER_CSV_INTERMEDIAIRE):
+	def save_csv(self, name='app/output/TEST.csv',final=TEST_SAUVEGARDER_CSV_INTERMEDIAIRE):
 		if final:
 			df_temp = self.df.set_index('measurementDate')
 			if 'date' in df_temp.columns:
@@ -54,7 +55,7 @@ class class_ConsumptionFile:
 			df_temp.to_csv(name,',')
 
 	def debug(self):
-		self.df.to_csv('output/debug_self.df_.csv')
+		self.df.to_csv('app/output/debug_self.df_.csv')
 
 	def graphique(self,mode="affichage"):
 		import matplotlib.pyplot as plt
@@ -69,7 +70,7 @@ class class_ConsumptionFile:
 		if mode == "affichage" :
 			plt.show()
 		else:
-			plt.savefig("output_formated/"+self.filename+".png")
+			plt.savefig("app/output_formated/"+self.filename+".png")
 		# plt.savefig('graphique.png')
 
 	
@@ -112,7 +113,7 @@ class class_ConsumptionFile:
 
 		self.tcd_month_average = temp_df_average.pivot_table(values=["value"], index=["month"], aggfunc=np.min)
 		# print(self.tcd_month_average)
-		self.tcd_month_average.to_csv('output/TCD.csv')
+		self.tcd_month_average.to_csv('app/output/TCD.csv')
 
 	'''
 	# ===========================================================================================

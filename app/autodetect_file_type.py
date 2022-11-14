@@ -27,7 +27,7 @@ def detect(inputfile, option=''):  # argv=sys.argv[1:]):
         parser.afficher()
         parser.parse()
         print(parser.file)
-        q = class_ConsumptionFile.class_ConsumptionFile('output/' + parser.file)
+        q = class_ConsumptionFile.class_ConsumptionFile('app/output/' + parser.file)
         return q.file_formatted
         if option == 'option display graph':
             q.graphique(option)

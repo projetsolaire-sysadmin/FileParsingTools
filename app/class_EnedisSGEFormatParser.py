@@ -53,7 +53,7 @@ class class_EnedisSGEFormatParser:
 		df = df.set_index('measurementDate')
 
 		"""enregistrement en csv"""
-		df.to_csv('output/'+self.file)
+		df.to_csv('app/output/'+self.file)
 
 
 	def convertir_ligne(self,line):

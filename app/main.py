@@ -21,8 +21,10 @@ def main(arg=""):
 
 	print("file_path",file_path)
 	if file_path[len(file_path)-4:] ==".csv":
-		print(datetime.datetime.now())
-		return autodetect_file_type.detect(file_path) #,'option display graph')
+		#print(datetime.datetime.now())
+		temp = autodetect_file_type.detect(file_path) #,'option display graph')
+		print("\n fichier généré : ",temp,"\n")
+		return temp
 		print(datetime.datetime.now())
 	else:
 		dossier = file_path

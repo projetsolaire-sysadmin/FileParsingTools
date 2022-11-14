@@ -72,6 +72,9 @@ def post():
 
             # print(os.path.join(UPLOAD_FOLDER, f.filename))
             app.config['output_file'] = main(os.path.join(os.path.join(app.root_path, app.config['UPLOAD_FOLDER']), f.filename))
+            
+            # patch :
+            app.config['output_file']=app.config['output_file'][4:]
             print(app.config['output_file'])
 
             return render_template('download.html')
