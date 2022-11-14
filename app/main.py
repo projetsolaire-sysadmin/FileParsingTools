@@ -3,7 +3,7 @@ import sys
 # import pathlib
 # print(pathlib.Path(__file__).parent.resolve())
 
-import autodetect_file_type
+from app import autodetect_file_type
 import os
 import datetime
 
@@ -29,7 +29,7 @@ def main(arg=""):
 		if os.path.exists(dossier):
 			for file in os.listdir(dossier):
 				print(file)
-				return autodetect_file_type.detect(dossier+"\\"+file) #,'option display graph')
+				return autodetect_file_type.detect(dossier + "\\" + file) #,'option display graph')
 		else:
 			print("erreur : le dossier n'existe pas ou le fichier n'est pas un csv")
 			exit()

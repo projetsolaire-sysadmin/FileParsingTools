@@ -11,11 +11,10 @@ import pathlib
 file_path = pathlib.Path("\\"+__file__+"\\FileParsingTool").parent.resolve()
 path = os.path.dirname(file_path)
 sys.path.append(path) # ou sys.path.insert(0, path)
-sys.path.append("C:\\Users\\jerem\\DEV\\ELANCE\\FlaskFileParsingTools\\app_parsing")
+sys.path.append("C:\\Users\\jerem\\DEV\\ELANCE\\FlaskFileParsingTools\\app")
 # print("\n".join(sys.path))
 
 # méthode 1 :
-from main import main
 
 # méthode 2 (créer package) :
 # http://www.xavierdupre.fr/app/teachpyx/helpsphinx/c_module/module.html

@@ -1,12 +1,12 @@
 /env
 /old templates
-/app_parsing/__pycache__
-/app_parsing/upload_files
-/app_parsing/env
-/app_parsing/__init__.bat
-/app_parsing/database.db
-/app_parsing/init_db.py
-/app_parsing/schema.sql
-/app_parsing/z_test*.py
+/app/__pycache__
+/app/upload_files
+/app/env
+/app/__init__.bat
+/app/database.db
+/app/init_db.py
+/app/schema.sql
+/app/z_test*.py
 *.csv
 *.txt
