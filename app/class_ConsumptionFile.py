@@ -38,7 +38,7 @@ class class_ConsumptionFile:
 		self.missing_data_detection()
 		# self.save_csv("output\TEST_etape4 ajout données manquantes.csv")
 
-		self.file_formatted = "app\\output_formated\\"+self.filename+"_formated.csv"
+		self.file_formatted = "app/output_formated/"+self.filename+"_formated.csv"
 		self.save_csv(self.file_formatted,True)
 
 	def display(self):

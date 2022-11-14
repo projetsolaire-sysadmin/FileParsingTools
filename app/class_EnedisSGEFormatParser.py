@@ -61,9 +61,8 @@ class class_EnedisSGEFormatParser:
 		# for item in t:
 		# 	print(item)
 
-		#print(t[0])
 
-		if t[0]!="ï»¿Identifiant PRM" and len(t[0])!=14 and t[0]!="Horodate" and not('E+' in t[0]):
+		if t[0]!="ï»¿Identifiant PRM" and t[0]!="Identifiant PRM" and t[0]!="\ufeffIdentifiant PRM" and len(t[0])!=14 and t[0]!="Horodate" and not('E+' in t[0]):
 			d= fonctions_convert.convert_ISOdate_to_date(t[0])
 			u=[]
 			u.append(fonctions_convert.convert_date_to_JJ_MM_AAAA(d))

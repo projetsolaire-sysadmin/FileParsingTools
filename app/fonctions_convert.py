@@ -2,6 +2,8 @@ from datetime import datetime, timedelta
 import sys
 
 def convert_ISOdate_to_date(s):
+	print(s)
+	print(s[19:])
 	if s[19:]=="+02:00" or s[19:]=="+01:00":
 		s=s[:19]
 		#print(s)
