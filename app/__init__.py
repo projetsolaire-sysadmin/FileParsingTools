@@ -6,12 +6,12 @@ import sys
 if sys.platform == 'win32':
 	import os
 '''
-import os
-import pathlib
-file_path = pathlib.Path("\\"+__file__+"\\FileParsingTool").parent.resolve()
-path = os.path.dirname(file_path)
-sys.path.append(path) # ou sys.path.insert(0, path)
-sys.path.append("C:\\Users\\jerem\\DEV\\ELANCE\\FlaskFileParsingTools\\app")
+#import os
+#import pathlib
+#file_path = pathlib.Path("\\"+__file__+"\\FileParsingTool").parent.resolve()
+#path = os.path.dirname(file_path)
+#sys.path.append(path) # ou sys.path.insert(0, path)
+#sys.path.append("C:\\Users\\jerem\\DEV\\ELANCE\\FlaskFileParsingTools\\app")
 # print("\n".join(sys.path))
 
 # méthode 1 :
