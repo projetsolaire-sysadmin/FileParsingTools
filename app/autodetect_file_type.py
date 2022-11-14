@@ -15,11 +15,11 @@ def detect(inputfile, option=''):#argv=sys.argv[1:]):
 	#inputfile = get_inputfile(file)
 	print(inputfile)
 	FILE_TYPE = get_file_type(inputfile)
-	if FILE_TYPE == "PRODUCTION_FILE_TYPE" :
+	if FILE_TYPE == "PRODUCTION_FILE_TYPE":
 		print("parse")
 		# parser = EnedisEmailFormatParser()
 		# parser.parse()
-	elif FILE_TYPE == "CONSUMPTION_FILE_TYPE" :
+	elif FILE_TYPE == "CONSUMPTION_FILE_TYPE":
 		print("parse")
 		parser = class_EnedisSGEFormatParser.class_EnedisSGEFormatParser(inputfile)
 		parser.afficher()
