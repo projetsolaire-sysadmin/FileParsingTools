@@ -24,7 +24,7 @@ def get_post(post_id):
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'lgjdslgfgjldfgjkfjhlsfdgvj1kltjqm'
-app.config['UPLOAD_FOLDER'] =  os.path.join(app.root_path, UPLOAD_FOLDER)
+app.config['UPLOAD_FOLDER'] =  os.path.join('app', UPLOAD_FOLDER)
 print(app.config['UPLOAD_FOLDER'])
 print(app.root_path)
 print(os.listdir())
