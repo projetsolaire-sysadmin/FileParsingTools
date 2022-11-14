@@ -9,4 +9,3 @@
 /app/schema.sql
 /app/z_test*.py
 *.csv
-*.txt
