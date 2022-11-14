@@ -25,7 +25,7 @@ def get_post(post_id):
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'lgjdslgfgjldfgjkfjhlsfdgvj1kltjqm'
-app.config['PARENT_DIR'] = os.path.dirname(os.path.realpath(__file__))
+app.config['PARENT_DIR'] = os.path.dirname(os.path.abspath(__file__))
 print(app.config['PARENT_DIR'])
 app.config['UPLOAD_FOLDER'] = app.config['PARENT_DIR'] + UPLOAD_FOLDER
 app.config['output_file'] =""
