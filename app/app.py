@@ -1,12 +1,11 @@
 import sqlite3
-from flask import Flask, render_template, request, send_file, url_for, flash, redirect
+from flask import Flask, render_template, request, send_file
 from werkzeug.exceptions import abort
 from werkzeug.utils import secure_filename
-from werkzeug.datastructures import  FileStorage
 import os
-import main
+from app.main import main
 
-UPLOAD_FOLDER = './upload_files/'
+UPLOAD_FOLDER = './app/upload_files/'
 ALLOWED_EXTENSIONS = {'csv'}
 file_formatted =""
 
@@ -72,7 +71,7 @@ def post():
             f.save(os.path.join(UPLOAD_FOLDER, f.filename))
             
             # print(os.path.join(UPLOAD_FOLDER, f.filename))
-            app.config['output_file'] = main.main(os.path.join(UPLOAD_FOLDER, f.filename))
+            app.config['output_file'] = main(os.path.join(UPLOAD_FOLDER, f.filename))
             
             return render_template('download.html')
             # return 'file uploaded successfully' #redirect(request.url)

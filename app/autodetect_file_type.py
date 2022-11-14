@@ -1,6 +1,5 @@
 import sys
-import class_EnedisSGEFormatParser
-import class_ConsumptionFile
+from app import class_EnedisSGEFormatParser, class_ConsumptionFile
 
 HEADERS_PRODUCTION_LIST = {'"",Month,Day,Hour,Energy Production [kWh]'}
 HEADERS_CONSUMPTION_LIST = {'ï»¿date;value',
@@ -26,7 +25,7 @@ def detect(inputfile, option=''):#argv=sys.argv[1:]):
 		parser.afficher()
 		parser.parse()
 		print(parser.file)
-		q = class_ConsumptionFile.class_ConsumptionFile('output/'+parser.file)
+		q = class_ConsumptionFile.class_ConsumptionFile('output/' + parser.file)
 		return q.file_formatted
 		if option == 'option display graph': 
 			q.graphique(option)

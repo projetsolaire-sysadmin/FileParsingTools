@@ -1,11 +1,8 @@
 import sys
-from this import d
-from xml.dom.pulldom import START_DOCUMENT
-import fonctions_convert
+from app import fonctions_convert
 import numpy as np
 import pandas as pd
-from datetime import datetime, timedelta
-import fonctions_supplementaires_pandas
+from datetime import datetime
 import math
 
 # La classe class_ConsumptionFile permet de formater le fichier (compléter les données)
@@ -63,7 +60,7 @@ class class_ConsumptionFile:
 		import matplotlib.pyplot as plt
 		df_temp=self.df
 		for i in range(len(df_temp)):
-			df_temp.loc[i,"date"] = fonctions_convert.convert_ElanceFormat_to_date(df_temp.loc[i,"measurementDate"], df_temp.loc[i,"measurementHour"])
+			df_temp.loc[i,"date"] = fonctions_convert.convert_ElanceFormat_to_date(df_temp.loc[i, "measurementDate"], df_temp.loc[i, "measurementHour"])
 		# print(df_temp.dtypes)
 		df_temp.plot(x ='date', y='value', kind = 'line')
 		plt.xlabel('Time')
@@ -92,7 +89,7 @@ class class_ConsumptionFile:
 	def init_data_weekday_average(self):
 		temp_df_average=self.df.assign(weekday=0)
 		for i in range(len(self.df)):
-			temp_df_average.loc[i,"weekday"] = fonctions_convert.convert_ElanceFormat_to_date(self.df.loc[i,"measurementDate"], self.df.loc[i,"measurementHour"]).isoweekday()
+			temp_df_average.loc[i,"weekday"] = fonctions_convert.convert_ElanceFormat_to_date(self.df.loc[i, "measurementDate"], self.df.loc[i, "measurementHour"]).isoweekday()
 		#tester avec .apply
 
 		# Utilisation d'un Pivot de Table
@@ -111,7 +108,7 @@ class class_ConsumptionFile:
 	def init_data_month_average(self):
 		temp_df_average=self.df.assign(month=0)
 		for i in range(len(self.df)):
-			temp_df_average.loc[i,"month"] = fonctions_convert.convert_ElanceFormat_to_date(self.df.loc[i,"measurementDate"], self.df.loc[i,"measurementHour"]).month
+			temp_df_average.loc[i,"month"] = fonctions_convert.convert_ElanceFormat_to_date(self.df.loc[i, "measurementDate"], self.df.loc[i, "measurementHour"]).month
 
 		self.tcd_month_average = temp_df_average.pivot_table(values=["value"], index=["month"], aggfunc=np.min)
 		# print(self.tcd_month_average)
@@ -125,8 +122,8 @@ class class_ConsumptionFile:
 
 	# fonction qui viendra remplacer missing_time_complete_year et missing_periods_detection en plus rapide !
 	def missing_periods_detection_V2(self, option="MODE_COMPLETE_YEAR"):
-		start_date_data = fonctions_convert.convert_ElanceFormat_to_date(self.df.loc[0,"measurementDate"], self.df.loc[0,"measurementHour"]) 
-		end_date_data = fonctions_convert.convert_ElanceFormat_to_date(self.df.loc[len(self.df)-1,"measurementDate"], self.df.loc[len(self.df)-1,"measurementHour"]) 
+		start_date_data = fonctions_convert.convert_ElanceFormat_to_date(self.df.loc[0, "measurementDate"], self.df.loc[0, "measurementHour"])
+		end_date_data = fonctions_convert.convert_ElanceFormat_to_date(self.df.loc[len(self.df) - 1, "measurementDate"], self.df.loc[len(self.df) - 1, "measurementHour"])
 		if option=="MODE_COMPLETE_YEAR":
 			start_date_final = datetime(start_date_data.year, 1, 1,0)
 			end_date_final = datetime(end_date_data.year, 12, 31,23)
@@ -143,8 +140,8 @@ class class_ConsumptionFile:
 		dftemp['date'] = dftemp.index
 		dftemp.set_index("index", inplace = True)
 		for i in range(len(dftemp)):
-			dftemp.loc[i,"measurementDate"]=fonctions_convert.convert_date_to_JJ_MM_AAAA(dftemp.loc[i,"date"])
-			dftemp.loc[i,"measurementHour"]=fonctions_convert.convert_date_to_HH_MM(dftemp.loc[i,"date"])
+			dftemp.loc[i,"measurementDate"]= fonctions_convert.convert_date_to_JJ_MM_AAAA(dftemp.loc[i, "date"])
+			dftemp.loc[i,"measurementHour"]= fonctions_convert.convert_date_to_HH_MM(dftemp.loc[i, "date"])
 		self.df = dftemp .reindex(columns=['measurementDate','measurementHour','value','date'])
 
 	"""
@@ -208,15 +205,15 @@ class class_ConsumptionFile:
 	def passer_en_pas_horaire(self):
 		#ajout colonne type date
 		for i in range(len(self.df)):
-			self.df.loc[i,"date"]=fonctions_convert.convert_ElanceFormat_to_date_heure_pleine(self.df.loc[i,"measurementDate"], self.df.loc[i,"measurementHour"])
+			self.df.loc[i,"date"]= fonctions_convert.convert_ElanceFormat_to_date_heure_pleine(self.df.loc[i, "measurementDate"], self.df.loc[i, "measurementHour"])
 		# Utilisation d'un Pivot de Table
 		tcd = self.df.pivot_table(values=["value"], index=["date"], aggfunc=np.mean)
 		tcd = tcd.reset_index()
 		#ajout colonnes measurementDate measurementHour
 		for i in range(len(tcd)):
-			tcd.loc[i,"measurementDate"]=fonctions_convert.convert_date_to_JJ_MM_AAAA(tcd.loc[i,"date"])
+			tcd.loc[i,"measurementDate"]= fonctions_convert.convert_date_to_JJ_MM_AAAA(tcd.loc[i, "date"])
 		for i in range(len(tcd)):
-			tcd.loc[i,"measurementHour"]=fonctions_convert.convert_date_to_HH_MM(tcd.loc[i,"date"])
+			tcd.loc[i,"measurementHour"]= fonctions_convert.convert_date_to_HH_MM(tcd.loc[i, "date"])
 		# ET SI DONNEES MANQUANTES? : no problemo
 		self.df = tcd.reindex(columns=['measurementDate','measurementHour','value','date'])
 
@@ -281,14 +278,14 @@ class class_ConsumptionFile:
 		elif taille_trou <= 24*30:
 			#chercher d'abord une date dans le future car on a potentiellement remplacé le passé
 			FLAG=False
-			date_ligne =fonctions_convert.convert_ElanceFormat_to_date(self.df.loc[ligne,"measurementDate"], self.df.loc[ligne,"measurementHour"])
+			date_ligne = fonctions_convert.convert_ElanceFormat_to_date(self.df.loc[ligne, "measurementDate"], self.df.loc[ligne, "measurementHour"])
 			#print("objectif:",date_ligne,date_ligne.isoweekday(),date_ligne.hour)
 			for c in [1,2,3,4,5,-1,-2,-3,-4,-5]:
 				i=ligne+24*7*c
 				if i>=len(self.df) or i<=-1:
 					#c'est le début ou la fin du fichier, on passe au suivant
 					continue
-				date_temp =fonctions_convert.convert_ElanceFormat_to_date(self.df.loc[i,"measurementDate"], self.df.loc[i,"measurementHour"])
+				date_temp = fonctions_convert.convert_ElanceFormat_to_date(self.df.loc[i, "measurementDate"], self.df.loc[i, "measurementHour"])
 				#print("trouvé:",i,date_temp,date_temp.isoweekday(), date_temp.hour)
 				if(date_temp.isoweekday()==date_ligne.isoweekday() and date_temp.hour==date_ligne.hour):
 					if not(math.isnan(df.loc[i,"value"])):
@@ -310,7 +307,7 @@ class class_ConsumptionFile:
 			# df.loc[ligne,"value"]=int(round(estimate_value))
 			
 			#méthode2 ()
-			date_ligne =fonctions_convert.convert_ElanceFormat_to_date(self.df.loc[ligne,"measurementDate"], self.df.loc[ligne,"measurementHour"])
+			date_ligne = fonctions_convert.convert_ElanceFormat_to_date(self.df.loc[ligne, "measurementDate"], self.df.loc[ligne, "measurementHour"])
 			# print(date_ligne.isoweekday(),date_ligne.hour)
 			mois=self.df.loc[ligne,"date"].month
 			offset_to_do=self.df_coefs_mensuels.loc[mois,"offset_a_appliquer"]

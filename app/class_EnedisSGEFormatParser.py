@@ -1,6 +1,5 @@
 import sys
-import fonctions_convert
-import numpy as np
+from app import fonctions_convert
 import pandas as pd
 
 # La classe class_EnedisSGEFormatParser permet de parser/formater un fichier ENEDIS 
@@ -11,7 +10,7 @@ class class_EnedisSGEFormatParser:
 	def __init__(self, path_file):
 		s=path_file.split('\\')
 		self.path_file = path_file
-		self.file = fonctions_convert.convert_argv_to_filename(s[len(s)-1]) #le dernier
+		self.file = fonctions_convert.convert_argv_to_filename(s[len(s) - 1]) #le dernier
 		self.lines = self.open_csv()
 		self.afficher()
 	
@@ -65,7 +64,7 @@ class class_EnedisSGEFormatParser:
 		#print(t[0])
 
 		if t[0]!="ï»¿Identifiant PRM" and len(t[0])!=14 and t[0]!="Horodate" and not('E+' in t[0]):
-			d=fonctions_convert.convert_ISOdate_to_date(t[0])
+			d= fonctions_convert.convert_ISOdate_to_date(t[0])
 			u=[]
 			u.append(fonctions_convert.convert_date_to_JJ_MM_AAAA(d))
 			u.append(fonctions_convert.convert_date_to_HH_MM(d))
