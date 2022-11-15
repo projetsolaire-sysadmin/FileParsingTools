@@ -83,8 +83,10 @@ def post():
             app.config['output_file'] = main(os.path.join(os.path.join(app.root_path, app.config['UPLOAD_FOLDER']), f.filename))
             
             # patch :
+            print("patch error app/app :", app.config['output_file'][4:])
             app.config['output_file']= app.config['output_file'][4:]
-
+            print("patch error app/app :",app.config['output_file'])
+            
             return render_template('download.html')
             # return 'file uploaded successfully' #redirect(request.url)
         else:
