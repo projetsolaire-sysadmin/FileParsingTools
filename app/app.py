@@ -1,9 +1,10 @@
 import sqlite3
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, session, app
 from werkzeug.exceptions import abort
 from werkzeug.utils import secure_filename
 import os
 from app.main import main
+from datetime import timedelta
 
 UPLOAD_FOLDER = 'upload_files'
 ALLOWED_EXTENSIONS = {'csv'}
@@ -28,6 +29,14 @@ app.config['UPLOAD_FOLDER'] =  UPLOAD_FOLDER
 print(app.config['UPLOAD_FOLDER'])
 
 app.config['output_file'] =""
+
+
+
+@app.before_request #https://www.codegrepper.com/code-examples/python/how+to+set+request+timeout+in+flask
+def make_session_permanent():
+    session.permanent = True
+    app.permanent_session_lifetime = timedelta(minutes=5)
+
 
 def allowed_file(filename):
     print(filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS)
