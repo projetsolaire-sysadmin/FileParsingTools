@@ -4,6 +4,8 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/loader.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/hide.css') }}">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -36,10 +38,30 @@
             <ul></ul>
             <input type = "file" name = "file" accept=".csv">
             <ul></ul>
-            <button type="submit" class="btn btn-primary">Traiter le fichier</button>
+            <button id="btn" type="submit" class="btn btn-primary" onclick="loading();">Traiter le fichier</button>
         </div>
-        <p>Le traitement peut prendre 1 à 5 minutes</p>
         </form> 
+
+          <p></p>
+          <div id="loading" class="hide">
+            <div class="loader"></div>Le traitement peut prendre quelques minutes, veuillez patienter
+          </div>
+
+          <script type="text/javascript">
+            /*$(document).ready(function() {
+              document.getElementById("loading").style.display = "none";
+            });*/
+            let btn = document.getElementById("btn");
+            let d1 = document.getElementById("loading");
+            btn.addEventListener("click", () => {
+              if(getComputedStyle(d1).display != "none"){
+                d1.style.display = "none";
+              } else {
+                d1.style.display = "block";
+              }
+            })
+          </script>
+        
 	</div>
 
     <!-- Optional JavaScript -->
