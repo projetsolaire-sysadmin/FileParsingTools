@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="container">
+  <h1>{% block title %} Outil de formatage des fichiers ENEDIS {% endblock %}</h1>
+    <form id="formulaire" action="{{ url_for('post') }}" method="POST" enctype="multipart/form-data" action="/foo/">
+        <div>
+            <input type="checkbox" name="completerannee" checked>
+            <label for="label_completer_annee" class="label">Compléter l'année (du 1er janvier au 31 décembre)</label>
+            <ul></ul>
+            <input type = "file" name = "file" accept=".csv">
+            <ul></ul>
+            <button id="btn" type="submit" class="btn btn-primary" onclick="loading();">Traiter le fichier</button>
+        </div>
+      </form> 
+    </div>
+      
+    <p></p>
+
+    <div id="loading" class="hide">
+          <div class="loader"></div>Le traitement peut prendre quelques minutes, veuillez patienter
+    </div>
+ 
+          <script type="text/javascript">
+            //init
+            $(document).ready(function() {
+              document.getElementById("loading").style.display = "none";
+              document.getElementById("formulaire").style.display = "block";
+            });
+
+            //let btn = document.getElementById("btn");
+            //let fo = document.getElementById("formulaire");
+            //let d1 = document.getElementById("loading");
+            
+            function loading(){
+              //document.getElementById("btn").addEventListener("click", () => {
+                if(getComputedStyle(document.getElementById("loading")).display != "none"){
+                  document.getElementById("loading").style.display = "none";
+                  document.getElementById("formulaire").style.display = "block";
+                } else {
+                  document.getElementById("loading").style.display = "block";
+                  document.getElementById("formulaire").style.display = "none";
+                }
+              //})
+            };
+            /*function loading(){
+                $("#loading").show();
+                $("#content").hide();       
+            }*/
+          </script>
+
+{% endblock %}
