@@ -100,12 +100,13 @@ def Download_File():
     return send_file(app.config['output_file'], as_attachment=True)
     """
 
-def loader2():
-    return render_template('base+loader.html')
-
 #https://flask.palletsprojects.com/en/1.1.x/quickstart/
 
 """Nouvelle version avec base.html"""
+@app.route('/accueil', methods=('GET', 'POST'))
+def accueil():
+    return render_template('base+accueil.html')
+
 @app.route('/about', methods=('GET', 'POST'))
 def about():
     return render_template('base+about.html')
