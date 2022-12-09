@@ -1,27 +1,15 @@
 import sqlite3
-from flask import Flask, render_template, request, send_file, session, app
+from flask import Flask, render_template, request, send_file, session, app, jsonify
 from werkzeug.exceptions import abort
 from werkzeug.utils import secure_filename
 import os
 from app.main import main
 from datetime import timedelta
+from threading import Thread
 
 UPLOAD_FOLDER = 'upload_files'
 ALLOWED_EXTENSIONS = {'csv'}
 file_formatted =""
-
-def get_db_connection():
-    conn = sqlite3.connect('database.db')
-    conn.row_factory = sqlite3.Row
-    return conn
-
-def get_post(post_id):
-    conn = get_db_connection()
-    post = conn.execute('SELECT * FROM posts WHERE id = ?',(post_id,)).fetchone()
-    conn.close()
-    if post is None:
-        abort(404)
-    return post
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'lgjdslgfgjldfgjkfjhlsfdgvj1kltjqm'
@@ -30,8 +18,11 @@ print(app.config['UPLOAD_FOLDER'])
 
 app.config['filename'] =""
 app.config['output_file'] =""
+# app.config['lancer_le_processus'] =False
+app.config['finished']=True
+th = Thread()
 
-
+# app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 @app.before_request #https://www.codegrepper.com/code-examples/python/how+to+set+request+timeout+in+flask
 def make_session_permanent():
@@ -119,77 +110,85 @@ def elance():
 def upload():
     return render_template('base+upload.html')
 
-@app.route('/upload', methods=['GET', 'POST'])
-def post():
-    if request.method == 'POST':
-        # print(1,request.files['file'])
-        f = request.files['file']
-        if secure_filename(f.filename)[-4:]==".csv":
-            render_template('base+elance.html')
-            f.save(os.path.join(os.path.join(app.root_path, app.config['UPLOAD_FOLDER']), f.filename))
-
-            # print(os.path.join(UPLOAD_FOLDER, f.filename))
-            app.config['output_file'] = main(os.path.join(os.path.join(app.root_path, app.config['UPLOAD_FOLDER']), f.filename))
-            
-            # patch :
-            print("patch error app/app :", app.config['output_file'][4:])
-            app.config['output_file']= app.config['output_file'][4:]
-            print("patch error app/app :",app.config['output_file'])
-            
-            return render_template('base+download.html')
-            # return 'file uploaded successfully' #redirect(request.url)
-        else:
-            return "not csv file"
-
-"""
-@app.route('/loader')
-def loader():
-    return render_template('base+download.html')
-"""
-"""
-@app.route('/upload', methods=['GET', 'POST'])
-def post():
-    if request.method == 'POST':
-        # print(1,request.files['file'])
-        f = request.files['file']
-        if secure_filename(f.filename)[-4:]==".csv":
-            app.config['filename'] =f.filename
-            f.save(os.path.join(os.path.join(app.root_path, app.config['UPLOAD_FOLDER']), f.filename))
-            
-            return render_template('base+loader.html')
-        else:
-            return "not csv file"
-"""
-"""
-@app.route("/loadingDone", methods=['GET', 'POST'])
-def loadingDone():
-    print("test")
-    return render_template('base+download.html')
-"""
-# https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xxii-background-jobs
-# -> https://stackoverflow.com/questions/72338204/flask-show-loading-page-while-another-time-consuming-function-is-running
-"""@app.route('/loader')
-def loader():
-    print("loader")
-    
-    # print(os.path.join(UPLOAD_FOLDER, f.filename))
+def do_work():
     app.config['output_file'] = main(os.path.join(os.path.join(app.root_path, app.config['UPLOAD_FOLDER']), app.config['filename']))
-            
     # patch :
     print("patch error app/app :", app.config['output_file'][4:])
     app.config['output_file']= app.config['output_file'][4:]
     print("patch error app/app :",app.config['output_file'])
+    # finished = True
+    app.config['finished']=True
+    print("traitement terminé")
+                
+@app.route('/upload', methods=['GET', 'POST'])
+def post():
+    if request.method == 'POST':
+        # print(1,request.files['file'])
+        f = request.files['file']
+        if secure_filename(f.filename)[-4:]==".csv":
+            f.save(os.path.join(os.path.join(app.root_path, app.config['UPLOAD_FOLDER']), f.filename))
+            app.config['filename']=f.filename
 
-    # return 'file uploaded successfully' #redirect(request.url)
-    return render_template('base+download.html')"""
+            """ méthode 1 (sans loader)"""
+            do_work()
+            return render_template('base+download.html')
+            # return 'file uploaded successfully' #redirect(request.url)
 
+            """méthode 3 (thread)
+            # https://stackoverflow.com/questions/41319199/how-do-i-change-the-rendered-template-in-flask-when-a-thread-completes
+            global th
+            app.config['finished']=False
+            th = Thread(target=do_work, kwargs={'value': request.args.get('value', 20)}) #, args=())
+            th.start()
+            return render_template('base+loader.html')"""
+
+        else:
+            return "not csv file"
+
+""" méthode 3 thread"""
+@app.route('/status')
+def thread_status():
+    """ Return the status of the worker thread """
+    # print('status : ',app.config['finished'])
+    return jsonify(dict(status=('finished' if app.config['finished'] else 'running')))
+  
+
+''' méthode 2 (avec loader)
+@app.after_request
+def after_request_func(response):
+    print(response)
+    print("after_request executing!")
+    if app.config['lancer_le_processus']==True:
+        app.config['lancer_le_processus']=False
+        # print('traitement en cours')
+        # print(os.path.join(UPLOAD_FOLDER, app.config['filename']))
+        """app.config['output_file'] = main(os.path.join(os.path.join(app.root_path, app.config['UPLOAD_FOLDER']), app.config['filename']))
+            
+        # patch :
+        print("patch error app/app :", app.config['output_file'][4:])
+        app.config['output_file']= app.config['output_file'][4:]
+        print("patch error app/app :",app.config['output_file'])
+            """
+        print('ici')
+        return response #render_template('base+download.html')
+        # return 'file uploaded successfully' #redirect(request.url)"""
+
+    return response'''
+
+
+@app.route('/loader', methods=['GET', 'POST'])
+def loader():
+    return render_template('base+loader.html')
+
+# https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xxii-background-jobs
+# -> https://stackoverflow.com/questions/72338204/flask-show-loading-page-while-another-time-consuming-function-is-running
 
 @app.route('/download')
 def download():
     print('download')
     print(app.config['output_file'])
     return send_file(app.config['output_file'], as_attachment=True)
-   
+
 
 @app.route('/CO2', methods=('GET', 'POST'))
 def CO2():

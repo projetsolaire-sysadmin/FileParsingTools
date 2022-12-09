@@ -22,6 +22,11 @@
           <div class="loader"></div>Le traitement peut durer quelques minutes, veuillez patienter
     </div>
  
+    <!--script type="text/javascript">
+      function loading(){
+          window.location.replace("{{ url_for('loader') }}");
+      };
+    </script-->
           <script type="text/javascript">
             //https://www.pierre-giraud.com/afficher-cacher-div-javascript/#:~:text=Il%20existe%20principalement%20deux%20m%C3%A9thodes,'affichage%20sur%20display%3A%20none%20.
             //init
@@ -30,10 +35,6 @@
               document.getElementById("formulaire").style.display = "block";
             });
 
-            //let btn = document.getElementById("btn");
-            //let fo = document.getElementById("formulaire");
-            //let d1 = document.getElementById("loading");
-            
             function loading(){
               //document.getElementById("btn").addEventListener("click", () => {
                 if(getComputedStyle(document.getElementById("loading")).display != "none"){
@@ -42,13 +43,13 @@
                 } else {
                   document.getElementById("loading").style.display = "block";
                   document.getElementById("formulaire").style.display = "none";
-                }
-              //})
+              }
             };
             /*function loading(){
                 $("#loading").show();
                 $("#content").hide();       
             }*/
           </script>
+
 
 {% endblock %}

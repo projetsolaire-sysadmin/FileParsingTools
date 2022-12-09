@@ -1,27 +1,36 @@
 {% extends 'base.html' %}
 
+{% block head %} 
+{% endblock %}
+
 {% block content %}
 
 <div class="container">
+
   <h1>{% block title %} Outil de formatage des fichiers ENEDIS {% endblock %}</h1>
           <p></p>
-          <div id="loading" class="hide">
-            <div class="loader"></div>Le traitement peut prendre quelques minutes, veuillez patienter
+          <div id="loading">
+            <div class="loader"></div>Le traitement peut durer quelques minutes, veuillez patienter...
+            <ul></ul>
           </div>
+          <div id="message"></div>
 
-          <script type="text/javascript">
-            $(document).ready(function() {
-              document.getElementById("loading").style.display = "none";
-            });
-            let btn = document.getElementById("btn");
-            let d1 = document.getElementById("loading");
-            btn.addEventListener("click", () => {
-              if(getComputedStyle(d1).display != "none"){
-                d1.style.display = "none";
-              } else {
-                d1.style.display = "block";
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        var refresh_id = setInterval(function() {
+            $.get(
+              "{{ url_for('thread_status') }}",
+              function(data) {
+                if (data.status == 'finished') {
+                  //window.location.replace("{{ url_for('loader') }}");
+                  document.getElementById("message").innerHTML = "finished";
+                }
               }
-            })
-          </script>
+            )}
+          , 1000);
+      });
+    </script>
+
 </div>
 {% endblock %}
