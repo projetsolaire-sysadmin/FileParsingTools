@@ -231,7 +231,9 @@ def download():
     print('user downloads the output file :', file)
 
     #patch
-    file = file.replace('app/app','app').replace('\\','/')
+    file = file.replace('app/app','app')
+    file = file.replace('\\','/')
+    print('after patch', file)
     return send_file(file, as_attachment=True)
 
 
