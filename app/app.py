@@ -131,11 +131,12 @@ def do_work():
         app.config['finished']=True
         return False
     else:
-        # patch :
+        # patch : car sur le serveur heroku ça réagit différemment
+        app.config['output_file']=patch_app_app(app.config['output_file'])
         print("patch error 'app/app' :", app.config['output_file'][4:])
         app.config['output_file']= app.config['output_file'][4:]
         print("patch error 'app/app' :",app.config['output_file'])
-        # app.config['output_file']=patch_app_app(app.config['output_file'])
+        
         print(app.config['output_file'])
 
         # finished = True
@@ -244,3 +245,9 @@ def download():
 def CO2():
     return render_template('base+CO2.html')
 
+
+def explorer():
+    print("explorer")
+    # from os import listdir
+    # from os.path import isfile, join
+    # fichiers = [f for f in listdir(monRepertoire) if isfile(join(monRepertoire, f))]
