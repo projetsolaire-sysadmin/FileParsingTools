@@ -106,13 +106,17 @@ def about():
 def elance():
     return render_template('base+elance.html')
 
+@app.route('/explorer', methods=('GET', 'POST'))
+def explorer():
+    return render_template('base+explorer.html')
+
 @app.route('/', methods=('GET', 'POST'))
 def upload():
     return render_template('base+upload.html')
 
 def patch_app_app(s):
     print("patch error 'app/app' :", app.config['output_file'][4:])
-    if 'app/app' in s:
+    if 'app/app' in s or 'app\\app' in s:
         print("patch error 'app/app' :", app.config['output_file'][4:])
         return s.replace('app/app','app')
     else:
@@ -131,7 +135,7 @@ def do_work():
         # app.config['output_file']= app.config['output_file'][4:]
         # print("patch error 'app/app' :",app.config['output_file'])
         app.config['output_file']=patch_app_app(app.config['output_file'])
-        
+
         # finished = True
         app.config['finished']=True
         print("traitement terminé")

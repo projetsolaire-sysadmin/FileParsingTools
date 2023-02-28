@@ -13,7 +13,8 @@ HEADERS_CONSUMPTION_LIST = ['ï»¿date;value',
                             'Identifiant PRM;Type de donnees;Date de debut;Date de fin;Grandeur physique;Grandeur metier;Etape metier;Unite;Pas en minutes',
                             'ï»¿Identifiant PRM;Type de donnees;Date de debut;Date de fin;Grandeur physique;Grandeur metier;Etape metier;Unite;Pas en minutes']
 HEADERS_CONSUMPTION_PARSED_LIST = {"measurementDate,measurementHour,value"}
-HEADERS_PRODUCTION_PARSED_LIST = {"month,day,hour,value"}
+HEADERS_PRODUCTION_PARSED_LIST = {"month,day,hour,value",
+                                  'Month;Day;Hour;Energy Production [kWh]'}
 
 def detect(inputfile, option=''):  # argv=sys.argv[1:]):
     # inputfile = get_inputfile(file)
