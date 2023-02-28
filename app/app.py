@@ -115,12 +115,9 @@ def upload():
     return render_template('base+upload.html')
 
 def patch_app_app(s):
-    print("patch error 'app/app' :", app.config['output_file'][4:])
     if 'app/app' in s or 'app\\app' in s:
-        print("patch error 'app/app' :", app.config['output_file'][4:])
         return s.replace('app/app','app')
     else:
-        print("patch error 'app/app' : no need")
         return s
     
 def do_work():
@@ -132,10 +129,10 @@ def do_work():
         return False
     else:
         # patch : car sur le serveur heroku ça réagit différemment
+        print("patch error 'app/app' before :", app.config['output_file'])
         app.config['output_file']=patch_app_app(app.config['output_file'])
-        print("patch error 'app/app' :", app.config['output_file'], app.config['output_file'][4:])
         app.config['output_file']= app.config['output_file'][4:]
-        print("patch error 'app/app' :",app.config['output_file'])
+        print("patch error 'app/app' after :",app.config['output_file'])
         app.config['finished']=True
         return True
                 
@@ -231,8 +228,7 @@ def loader():
 
 @app.route('/download')
 def download():
-    print('user downloads the output file')
-    print('file :',app.config['output_file'])
+    print('user downloads the output file :',app.config['output_file'])
     return send_file(app.config['output_file'], as_attachment=True)
 
 
