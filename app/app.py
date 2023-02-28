@@ -112,13 +112,19 @@ def upload():
 
 def do_work():
     app.config['output_file'] = main(os.path.join(os.path.join(app.root_path, app.config['UPLOAD_FOLDER']), app.config['filename']))
-    # patch :
-    print("patch error app/app :", app.config['output_file'][4:])
-    app.config['output_file']= app.config['output_file'][4:]
-    print("patch error app/app :",app.config['output_file'])
-    # finished = True
-    app.config['finished']=True
-    print("traitement terminé")
+    print(app.config['output_file'])
+    if app.config['output_file']=='PRODUCTION_FILE_ALREADY_PARSED_TYPE':
+        # app.config['finished']=True
+        return False
+    else:
+        # patch :
+        print("patch error 'app/app' :", app.config['output_file'][4:])
+        app.config['output_file']= app.config['output_file'][4:]
+        print("patch error 'app/app' :",app.config['output_file'])
+        # finished = True
+        app.config['finished']=True
+        print("traitement terminé")
+        return True
                 
 @app.route('/upload', methods=['GET', 'POST'])
 def post():
@@ -130,7 +136,10 @@ def post():
             app.config['filename']=f.filename
 
             """ méthode 1 (sans loader)"""
-            do_work()
+            if do_work():
+                return render_template('base+download.html')
+            else:
+                return "fichier déjà formaté"
             return render_template('base+download.html')
             # return 'file uploaded successfully' #redirect(request.url)
 
@@ -144,7 +153,31 @@ def post():
 
         else:
             return "not csv file"
+        
+@app.route('/production', methods=('GET', 'POST'))
+def upload_production():
+    return render_template('base+production.html')
 
+@app.route('/prod', methods=['GET', 'POST'])
+def postProductionFile():
+    if request.method == 'POST':
+        # print(1,request.files['file'])
+        f = request.files['file']
+        if secure_filename(f.filename)[-4:]==".csv":
+            f.save(os.path.join(os.path.join(app.root_path, app.config['UPLOAD_FOLDER']), f.filename))
+            app.config['filename']=f.filename
+
+            """ méthode 1 (sans loader)"""
+            if do_work():
+                return render_template('base+download.html')
+            else:
+                return "fichier déjà formaté"
+            # return 'file uploaded successfully' #redirect(request.url)
+
+        else:
+            return "not csv file"
+        
+  
 """ méthode 3 thread"""
 @app.route('/status')
 def thread_status():

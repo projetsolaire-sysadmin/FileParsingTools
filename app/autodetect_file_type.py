@@ -2,7 +2,10 @@ import sys
 from app import class_EnedisSGEFormatParser
 from app import class_ConsumptionFile
 
-HEADERS_PRODUCTION_LIST = {'"",Month,Day,Hour,Energy Production [kWh]'}
+from app import production_file_parser
+
+HEADERS_PRODUCTION_LIST = {'"",Month,Day,Hour,Energy Production [kWh]',
+                           'ID,month,day,hour,value'}
 HEADERS_CONSUMPTION_LIST = ['ï»¿date;value',
                             'Date de la mesure;Heure de la mesure;Valeur;Statut de la mesure;PRM;Type de données;Date de début;Date de fin;Grandeur métier;Grandeur physique;Statut demandé;Unité;Pas en minutes',
                             'Date de la mesure;Heure de la mesure;Valeur;Statut de la mesure;PRM;Type de donnï¿½es;Date de dï¿½but;Date de fin;Grandeur mï¿½tier;Grandeur physique;Statut demandï¿½;Unitï¿½;Pas en minutes',
@@ -10,17 +13,20 @@ HEADERS_CONSUMPTION_LIST = ['ï»¿date;value',
                             'Identifiant PRM;Type de donnees;Date de debut;Date de fin;Grandeur physique;Grandeur metier;Etape metier;Unite;Pas en minutes',
                             'ï»¿Identifiant PRM;Type de donnees;Date de debut;Date de fin;Grandeur physique;Grandeur metier;Etape metier;Unite;Pas en minutes']
 HEADERS_CONSUMPTION_PARSED_LIST = {"measurementDate,measurementHour,value"}
-
+HEADERS_PRODUCTION_PARSED_LIST = {"month,day,hour,value"}
 
 def detect(inputfile, option=''):  # argv=sys.argv[1:]):
     # inputfile = get_inputfile(file)
     print(inputfile)
     FILE_TYPE = get_file_type(inputfile)
 
+    print("\n FILE_TYPE : ",FILE_TYPE,"\n")
+
     if FILE_TYPE == "PRODUCTION_FILE_TYPE":
         print("parse")
-    # parser = EnedisEmailFormatParser()
-    # parser.parse()
+        return production_file_parser.parse_production2(inputfile)
+    elif FILE_TYPE == "PRODUCTION_FILE_ALREADY_PARSED_TYPE":
+        return FILE_TYPE
     elif FILE_TYPE == "CONSUMPTION_FILE_TYPE":
         print("parse")
         parser = class_EnedisSGEFormatParser.class_EnedisSGEFormatParser(inputfile)
@@ -78,6 +84,9 @@ def get_file_type(inputfile):
     elif str(lines[0]).strip() in HEADERS_CONSUMPTION_PARSED_LIST:
         print("consumption file already parsed detected")
         return ("CONSUMPTION_FILE_ALREADY_PARSED_TYPE")
+    elif str(lines[0]).strip() in HEADERS_PRODUCTION_PARSED_LIST:
+        print("production file already parsed detected")
+        return ("PRODUCTION_FILE_ALREADY_PARSED_TYPE")
     else:
         print("production or consumption file NOT detected. Add the next sentence in the good list :")
         print(lines[0])
