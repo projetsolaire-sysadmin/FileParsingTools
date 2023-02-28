@@ -110,6 +110,15 @@ def elance():
 def upload():
     return render_template('base+upload.html')
 
+def patch_app_app(s):
+    print("patch error 'app/app' :", app.config['output_file'][4:])
+    if 'app/app' in s:
+        print("patch error 'app/app' :", app.config['output_file'][4:])
+        return s.replace('app/app','app')
+    else:
+        print("patch error 'app/app' : no need")
+        return s
+    
 def do_work():
     app.config['output_file'] = main(os.path.join(os.path.join(app.root_path, app.config['UPLOAD_FOLDER']), app.config['filename']))
     print(app.config['output_file'])
@@ -118,9 +127,11 @@ def do_work():
         return False
     else:
         # patch :
-        print("patch error 'app/app' :", app.config['output_file'][4:])
-        app.config['output_file']= app.config['output_file'][4:]
-        print("patch error 'app/app' :",app.config['output_file'])
+        # print("patch error 'app/app' :", app.config['output_file'][4:])
+        # app.config['output_file']= app.config['output_file'][4:]
+        # print("patch error 'app/app' :",app.config['output_file'])
+        app.config['output_file']=patch_app_app(app.config['output_file'])
+        
         # finished = True
         app.config['finished']=True
         print("traitement terminé")
