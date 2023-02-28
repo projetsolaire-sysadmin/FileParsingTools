@@ -124,16 +124,15 @@ def do_work():
     app.config['output_file'] = main(os.path.join(os.path.join(app.root_path, app.config['UPLOAD_FOLDER']), app.config['filename']))
     print('traitement terminé')
     print(app.config['output_file'])
+    app.config['finished']=True
     if app.config['output_file']=='PRODUCTION_FILE_ALREADY_PARSED_TYPE':
-        app.config['finished']=True
         return False
     else:
         # patch : car sur le serveur heroku ça réagit différemment
         print("patch error 'app/app' before :", app.config['output_file'])
         app.config['output_file']=patch_app_app(app.config['output_file'])
         app.config['output_file']= app.config['output_file'][4:]
-        print("patch error 'app/app' after :",app.config['output_file'])
-        app.config['finished']=True
+        print("patch error 'app/app' after :", app.config['output_file'])
         return True
                 
 @app.route('/upload', methods=['GET', 'POST'])
@@ -228,7 +227,7 @@ def loader():
 
 @app.route('/download')
 def download():
-    print('user downloads the output file :',app.config['output_file'])
+    print('user downloads the output file :', app.config['output_file'])
     return send_file(app.config['output_file'], as_attachment=True)
 
 
