@@ -34,7 +34,6 @@ def allowed_file(filename):
     print(filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS)
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-
 @app.route('/')
 def index():
     # conn = get_db_connection()
@@ -232,7 +231,9 @@ def download():
 
     return send_file(file, as_attachment=True)
 
-#  https://stackoverflow.com/questions/43644038/flask-heroku-file-not-found-error-on-mobiles
+# https://stackoverflow.com/questions/43644038/flask-heroku-file-not-found-error-on-mobiles (sans réponse)
+# https://stackoverflow.com/questions/72963901/heroku-python-filenotfounderror-errno-2-no-such-file-or-directory
+# https://stackoverflow.com/questions/54086013/cannot-find-file-on-trying-to-deploy-to-heroku-works-locally
 
 @app.route('/CO2', methods=('GET', 'POST'))
 def CO2():

@@ -12,7 +12,7 @@ def parse_production2(file):
     df = rename_columns(df)
     df = df.set_index('month')
     # print(df)
-    output_file_name = 'app/output_formated/'+ntpath.basename(file)[:-4]+'_f.csv'
+    output_file_name = 'app/output_formated\\'+ntpath.basename(file)[:-4]+'_f.csv'
     print(output_file_name)
     df.to_csv(output_file_name)
     return output_file_name
@@ -31,5 +31,5 @@ def rename_columns(df):
 #     return df
 
 if __name__ == '__main__':
-    parse_production2('upload_files\\Aurora-Solar-Format.csv')
+    parse_production2('upload_files/Aurora-Solar-Format.csv')
 
