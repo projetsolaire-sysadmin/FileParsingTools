@@ -125,16 +125,18 @@ def patch_app_app(s):
     
 def do_work():
     app.config['output_file'] = main(os.path.join(os.path.join(app.root_path, app.config['UPLOAD_FOLDER']), app.config['filename']))
+    print('traitement terminé')
     print(app.config['output_file'])
     if app.config['output_file']=='PRODUCTION_FILE_ALREADY_PARSED_TYPE':
-        # app.config['finished']=True
+        app.config['finished']=True
         return False
     else:
         # patch :
-        # print("patch error 'app/app' :", app.config['output_file'][4:])
-        # app.config['output_file']= app.config['output_file'][4:]
-        # print("patch error 'app/app' :",app.config['output_file'])
-        app.config['output_file']=patch_app_app(app.config['output_file'])
+        print("patch error 'app/app' :", app.config['output_file'][4:])
+        app.config['output_file']= app.config['output_file'][4:]
+        print("patch error 'app/app' :",app.config['output_file'])
+        # app.config['output_file']=patch_app_app(app.config['output_file'])
+        print(app.config['output_file'])
 
         # finished = True
         app.config['finished']=True
@@ -233,7 +235,7 @@ def loader():
 
 @app.route('/download')
 def download():
-    print('download')
+    print('user downloads the output file')
     print(app.config['output_file'])
     return send_file(app.config['output_file'], as_attachment=True)
 
