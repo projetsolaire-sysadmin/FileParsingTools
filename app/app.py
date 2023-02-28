@@ -22,6 +22,7 @@ app.config['output_file'] =""
 app.config['finished']=True
 th = Thread()
 
+import time
 # app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 @app.before_request #https://www.codegrepper.com/code-examples/python/how+to+set+request+timeout+in+flask
@@ -143,7 +144,7 @@ def post():
         if secure_filename(f.filename)[-4:]==".csv":
             f.save(os.path.join(os.path.join(app.root_path, app.config['UPLOAD_FOLDER']), f.filename))
             app.config['filename']=f.filename
-
+            time.sleep(2)
             """ méthode 1 (sans loader)"""
             if do_work():
                 return render_template('base+download.html')
@@ -230,12 +231,9 @@ def download():
     file = app.config['output_file']
     print('user downloads the output file :', file)
 
-    #patch
-    # file = file.replace('app/app','app')
-    # file = file.replace('\\','/')
-    print('after patch', file)
-    return send_file(file) #, as_attachment=True)
+    return send_file(file, as_attachment=True)
 
+#  https://stackoverflow.com/questions/43644038/flask-heroku-file-not-found-error-on-mobiles
 
 @app.route('/CO2', methods=('GET', 'POST'))
 def CO2():
