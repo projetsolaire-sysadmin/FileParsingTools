@@ -14,12 +14,11 @@ file_formatted =""
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'lgjdslgfgjldfgjkfjhlsfdgvj1kltjqm'
 app.config['UPLOAD_FOLDER'] =  UPLOAD_FOLDER
-print(app.config['UPLOAD_FOLDER'])
 
 app.config['filename'] =""
 app.config['output_file'] =""
 # app.config['lancer_le_processus'] =False
-app.config['finished']=True
+app.config['finished']=True #remplacer par "status"
 th = Thread()
 
 import time
@@ -144,7 +143,7 @@ def post():
         if secure_filename(f.filename)[-4:]==".csv":
             f.save(os.path.join(os.path.join(app.root_path, app.config['UPLOAD_FOLDER']), f.filename))
             app.config['filename']=f.filename
-            time.sleep(2)
+            # time.sleep(2)
             """ méthode 1 (sans loader)"""
             if do_work():
                 return render_template('base+download.html')
