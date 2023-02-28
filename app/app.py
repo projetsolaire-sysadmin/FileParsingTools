@@ -133,15 +133,10 @@ def do_work():
     else:
         # patch : car sur le serveur heroku ça réagit différemment
         app.config['output_file']=patch_app_app(app.config['output_file'])
-        print("patch error 'app/app' :", app.config['output_file'][4:])
+        print("patch error 'app/app' :", app.config['output_file'], app.config['output_file'][4:])
         app.config['output_file']= app.config['output_file'][4:]
         print("patch error 'app/app' :",app.config['output_file'])
-        
-        print(app.config['output_file'])
-
-        # finished = True
         app.config['finished']=True
-        print("traitement terminé")
         return True
                 
 @app.route('/upload', methods=['GET', 'POST'])
@@ -237,7 +232,7 @@ def loader():
 @app.route('/download')
 def download():
     print('user downloads the output file')
-    print(app.config['output_file'])
+    print('file :',app.config['output_file'])
     return send_file(app.config['output_file'], as_attachment=True)
 
 
@@ -245,9 +240,13 @@ def download():
 def CO2():
     return render_template('base+CO2.html')
 
-
+"""
+import os
+@app.route('/explorer', methods=('GET', 'POST'))
 def explorer():
     print("explorer")
-    # from os import listdir
+    list = os.listdir('.')
+    print(list)
     # from os.path import isfile, join
     # fichiers = [f for f in listdir(monRepertoire) if isfile(join(monRepertoire, f))]
+     """
