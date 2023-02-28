@@ -234,7 +234,7 @@ def download():
     file = file.replace('app/app','app')
     file = file.replace('\\','/')
     print('after patch', file)
-    return send_file(file, as_attachment=True)
+    return send_file('app/'+file) #, as_attachment=True)
 
 
 @app.route('/CO2', methods=('GET', 'POST'))
