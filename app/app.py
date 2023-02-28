@@ -227,8 +227,12 @@ def loader():
 
 @app.route('/download')
 def download():
-    print('user downloads the output file :', app.config['output_file'])
-    return send_file(app.config['output_file'], as_attachment=True)
+    file = app.config['output_file']
+    print('user downloads the output file :', file)
+
+    #patch
+    file = file.replace('app/app','app').replace('\\','/')
+    return send_file(file, as_attachment=True)
 
 
 @app.route('/CO2', methods=('GET', 'POST'))
