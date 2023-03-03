@@ -2,11 +2,9 @@ from datetime import datetime, timedelta
 import sys
 
 def convert_ISOdate_to_date(s):
-	# print(s)
-	# print(s[19:])
+	# print(s, s[19:])
 	if s[19:]=="+02:00" or s[19:]=="+01:00":
 		s=s[:19]
-		#print(s)
 	else:
 		print("error +02:00", s)
 		sys.exit()
@@ -40,7 +38,7 @@ def convert_argv_to_filename(str):
 	else:
 		return str
 
-
+#tests
 # d = datetime.datetime.now()
 # print(d)
 # print(convert_date_to_JJ_MM_AAAA(d))
