@@ -95,7 +95,7 @@ def get_file_type(inputfile):
         sys.exit(2)
 
 
-# TO DO : proposer d'ajouter le header dans la table de correspondance et d'identifier si prod ou conso !
+# TO DO : idea : proposer d'ajouter le header dans la table de correspondance et d'identifier si prod ou conso !
 
 
 if __name__ == "__main__":
