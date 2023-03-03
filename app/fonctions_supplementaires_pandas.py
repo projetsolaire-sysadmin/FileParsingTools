@@ -1,7 +1,7 @@
-"""import numpy as np
-import pandas as pd
-import fonctions_convert
-from datetime import datetime, timedelta"""
+# import numpy as np
+# import pandas as pd
+# import fonctions_convert
+# from datetime import datetime, timedelta
 
 def inserer_ligne_dans_dataframe(ligne,df,valeur):
 	# https://fr.acervolima.com/inserer-une-ligne-a-une-position-donnee-dans-pandas-dataframe/
