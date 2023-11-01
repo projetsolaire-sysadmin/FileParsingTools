@@ -1,4 +1,5 @@
 import sys
+import asyncio
 from app import class_EnedisSGEFormatParser
 from app import class_ConsumptionFile
 
@@ -18,40 +19,43 @@ HEADERS_PRODUCTION_PARSED_LIST = {"month,day,hour,value",
                                   'Month;Day;Hour;Energy Production [kWh]'}
 
 def detect(inputfile, option=''):  # argv=sys.argv[1:]):
-    # inputfile = get_inputfile(file)
-    print(inputfile)
-    FILE_TYPE = get_file_type(inputfile)
+  asyncio.create_task(process(inputfile, option))
+    
 
-    print("\n FILE_TYPE : ",FILE_TYPE,"\n")
+async def process(inputfile, option=''):
+  # inputfile = get_inputfile(file)
+  print(inputfile)
+  FILE_TYPE = get_file_type(inputfile)
 
-    if FILE_TYPE == "PRODUCTION_FILE_TYPE":
-        print("parse")
-        return production_file_parser.parse_production2(inputfile)
-    elif FILE_TYPE == "PRODUCTION_FILE_ALREADY_PARSED_TYPE":
-        return FILE_TYPE
-    elif FILE_TYPE == "CONSUMPTION_FILE_TYPE":
-        print("parse")
-        parser = class_EnedisSGEFormatParser.class_EnedisSGEFormatParser(inputfile)
-        parser.afficher()
-        parser.parse()
-        print(parser.file)
-        q = class_ConsumptionFile.class_ConsumptionFile('app/output/' + parser.file)
-        return q.file_formatted
-        if option == 'option display graph':
-            q.graphique(option)
-    elif FILE_TYPE == "CONSUMPTION_FILE_ALREADY_PARSED_TYPE":
-        q = class_ConsumptionFile.class_ConsumptionFile(inputfile)
-        return q.file_formatted
-        if option == 'option display graph':
-            q.graphique(option)
-    elif FILE_TYPE == "CONSUMPTION_FILE_DAILY_TYPE":
-        print("consumption DAYS file detected, file not supported")
-    elif FILE_TYPE == "NOT ENOUGH DATA":
-        print("Not enough data, file not supported")
-    else:
-        print("type file not detected")
+  print("\n FILE_TYPE : ",FILE_TYPE,"\n")
 
-
+  if FILE_TYPE == "PRODUCTION_FILE_TYPE":
+      print("parse")
+      return production_file_parser.parse_production2(inputfile)
+  elif FILE_TYPE == "PRODUCTION_FILE_ALREADY_PARSED_TYPE":
+      return FILE_TYPE
+  elif FILE_TYPE == "CONSUMPTION_FILE_TYPE":
+      print("parse")
+      parser = class_EnedisSGEFormatParser.class_EnedisSGEFormatParser(inputfile)
+      parser.afficher()
+      parser.parse()
+      print(parser.file)
+      q = class_ConsumptionFile.class_ConsumptionFile('app/output/' + parser.file)
+      return q.file_formatted
+      if option == 'option display graph':
+          q.graphique(option)
+  elif FILE_TYPE == "CONSUMPTION_FILE_ALREADY_PARSED_TYPE":
+      q = class_ConsumptionFile.class_ConsumptionFile(inputfile)
+      return q.file_formatted
+      if option == 'option display graph':
+          q.graphique(option)
+  elif FILE_TYPE == "CONSUMPTION_FILE_DAILY_TYPE":
+      print("consumption DAYS file detected, file not supported")
+  elif FILE_TYPE == "NOT ENOUGH DATA":
+      print("Not enough data, file not supported")
+  else:
+      print("type file not detected")
+  
 def get_file_type(inputfile):
     # read header of the input file
     try:
