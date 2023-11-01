@@ -19,9 +19,12 @@ HEADERS_PRODUCTION_PARSED_LIST = {"month,day,hour,value",
                                   'Month;Day;Hour;Energy Production [kWh]'}
 
 def detect(inputfile, option=''):  # argv=sys.argv[1:]):
-  asyncio.create_task(process(inputfile, option))
-    
+ asyncio.get_event_loop().run_until_complete(main(inputfile, option))
 
+    
+async def main(inputfile, option):
+  asyncio.create_task(process(inputfile, option))
+  
 async def process(inputfile, option=''):
   # inputfile = get_inputfile(file)
   print(inputfile)
