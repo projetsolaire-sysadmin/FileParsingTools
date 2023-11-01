@@ -87,12 +87,15 @@ def do_work():
                 
 @app.route('/upload', methods=['GET', 'POST'])
 def post():
+    print("here at post")
     if request.method == 'POST':
         f = request.files['file']
         if secure_filename(f.filename)[-4:]==".csv":
+                print("here at post")
             f.save(os.path.join(os.path.join(app.root_path, app.config['UPLOAD_FOLDER']), f.filename))
             app.config['filename']=f.filename
             if do_work():
+                    print("here at post")
                 return render_template('base+download.html')
             else:
                           return render_template('base+download.html')
