@@ -95,8 +95,8 @@ def post():
             if do_work():
                 return render_template('base+download.html')
             else:
-                return "fichier déjà formaté"
-            return render_template('base+download.html')
+                          return render_template('base+download.html')
+
 
         else:
             return "not csv file"
