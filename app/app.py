@@ -94,9 +94,16 @@ def post():
             print("here at post")
             f.save(os.path.join(os.path.join(app.root_path, app.config['UPLOAD_FOLDER']), f.filename))
             app.config['filename']=f.filename
+            app.config['output_file'] = main(os.path.join(os.path.join(app.root_path, app.config['UPLOAD_FOLDER']), app.config['filename']))
+            print('traitement terminé')
+            print(app.config['output_file'])
+            app.config['finished']=True
+            # patch : car sur le serveur heroku ça réagit différemment
+            print("patch error 'app/app' before :", app.config['output_file'])
+            app.config['output_file']=patch_app_app(app.config['output_file'])
+            app.config['output_file']= app.config['output_file'][4:]
+            print("patch error 'app/app' after :", app.config['output_file'])
             return render_template('base+download.html')
-            #do_work()
-
 
         else:
             return "not csv file"
