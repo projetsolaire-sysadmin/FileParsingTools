@@ -41,6 +41,55 @@ def index():
     # conn.close()
     return render_template('base+upload.html') #, posts=posts)
 
+"""
+@app.route('/', methods=('GET', 'POST'))
+def post():
+    print("hello")
+    print(request.form.get('completerannee'))
+    
+    if request.method == 'POST':
+        cb=request.form.get('completerannee')
+        print(cb)
+        if cb=="on": 
+            completer_annee = True 
+        else: 
+            completer_annee = False
+        print(completer_annee)
+        f = request.files['file']
+        f.save(secure_filename(f.filename))
+        return "traitement en cours..."
+    # return render_template('post.html')
+"""
+"""
+@app.route('/', methods=['GET', 'POST'])
+def post():
+    if request.method == 'POST':
+        # print(1,request.files['file'])
+        f = request.files['file']
+        if secure_filename(f.filename)[-4:]==".csv":
+            f.save(os.path.join(os.path.join(app.root_path, app.config['UPLOAD_FOLDER']), f.filename))
+
+            # print(os.path.join(UPLOAD_FOLDER, f.filename))
+            app.config['output_file'] = main(os.path.join(os.path.join(app.root_path, app.config['UPLOAD_FOLDER']), f.filename))
+            
+            # patch :
+            print("patch error app/app :", app.config['output_file'][4:])
+            app.config['output_file']= app.config['output_file'][4:]
+            print("patch error app/app :",app.config['output_file'])
+            
+            return render_template('download.html')
+            # return 'file uploaded successfully' #redirect(request.url)
+        else:
+            return "not csv file"
+
+
+@app.route('/download/')
+def Download_File():
+    print('download')
+    print(app.config['output_file'])
+    return send_file(app.config['output_file'], as_attachment=True)
+    """
+
 #https://flask.palletsprojects.com/en/1.1.x/quickstart/
 
 """Nouvelle version avec base.html"""
@@ -87,23 +136,28 @@ def do_work():
                 
 @app.route('/upload', methods=['GET', 'POST'])
 def post():
-    print("here at post")
     if request.method == 'POST':
+        # print(1,request.files['file'])
         f = request.files['file']
         if secure_filename(f.filename)[-4:]==".csv":
-            print("here at post")
             f.save(os.path.join(os.path.join(app.root_path, app.config['UPLOAD_FOLDER']), f.filename))
             app.config['filename']=f.filename
-            app.config['output_file'] = main(os.path.join(os.path.join(app.root_path, app.config['UPLOAD_FOLDER']), app.config['filename']))
-            print('traitement terminé')
-            print(app.config['output_file'])
-            app.config['finished']=True
-            # patch : car sur le serveur heroku ça réagit différemment
-            print("patch error 'app/app' before :", app.config['output_file'])
-            app.config['output_file']=patch_app_app(app.config['output_file'])
-            app.config['output_file']= app.config['output_file'][4:]
-            print("patch error 'app/app' after :", app.config['output_file'])
+            # time.sleep(2)
+            """ méthode 1 (sans loader)"""
+            if do_work():
+                return render_template('base+download.html')
+            else:
+                return "fichier déjà formaté"
             return render_template('base+download.html')
+            # return 'file uploaded successfully' #redirect(request.url)
+
+            """méthode 3 (thread)
+            # https://stackoverflow.com/questions/41319199/how-do-i-change-the-rendered-template-in-flask-when-a-thread-completes
+            global th
+            app.config['finished']=False
+            th = Thread(target=do_work, kwargs={'value': request.args.get('value', 20)}) #, args=())
+            th.start()
+            return render_template('base+loader.html')"""
 
         else:
             return "not csv file"
@@ -140,6 +194,29 @@ def thread_status():
     return jsonify(dict(status=('finished' if app.config['finished'] else 'running')))
   
 
+''' méthode 2 (avec loader)
+@app.after_request
+def after_request_func(response):
+    print(response)
+    print("after_request executing!")
+    if app.config['lancer_le_processus']==True:
+        app.config['lancer_le_processus']=False
+        # print('traitement en cours')
+        # print(os.path.join(UPLOAD_FOLDER, app.config['filename']))
+        """app.config['output_file'] = main(os.path.join(os.path.join(app.root_path, app.config['UPLOAD_FOLDER']), app.config['filename']))
+            
+        # patch :
+        print("patch error app/app :", app.config['output_file'][4:])
+        app.config['output_file']= app.config['output_file'][4:]
+        print("patch error app/app :",app.config['output_file'])
+            """
+        print('ici')
+        return response #render_template('base+download.html')
+        # return 'file uploaded successfully' #redirect(request.url)"""
+
+    return response'''
+
+
 @app.route('/loader', methods=['GET', 'POST'])
 def loader():
     return render_template('base+loader.html')
@@ -162,4 +239,13 @@ def download():
 def CO2():
     return render_template('base+CO2.html')
 
-
+"""
+import os
+@app.route('/explorer', methods=('GET', 'POST'))
+def explorer():
+    print("explorer")
+    list = os.listdir('.')
+    print(list)
+    # from os.path import isfile, join
+    # fichiers = [f for f in listdir(monRepertoire) if isfile(join(monRepertoire, f))]
+     """
